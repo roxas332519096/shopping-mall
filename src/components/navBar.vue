@@ -8,19 +8,19 @@
         </router-link>
       </li>
       <li>
-        <a href="">
+        <a href>
           <i class="icon-category"></i>
           <div>分类</div>
         </a>
       </li>
       <li>
-        <a href="">
+        <a href>
           <i class="icon-cart"></i>
           <div>购物车</div>
         </a>
       </li>
       <li>
-        <a href="">
+        <a href>
           <i class="icon-user"></i>
           <div>我</div>
         </a>

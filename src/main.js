@@ -3,16 +3,21 @@ import App from './App.vue'
 import router from './router'
 import store from './store'
 import axios from 'axios'
-import swiper from 'swiper'
+import {
+  InfiniteScroll
+} from 'mint-ui'
 
+//axios
 Vue.config.productionTip = false
-Vue.$axios = axios;
-Vue.$swiper = swiper;
+axios.defaults.baseURL = 'https://easy-mock.com/mock/5b14e7fd647ea43344eeccef'
+Vue.prototype.$axios = axios;
+
+//mint-ui
+Vue.use(InfiniteScroll);
 
 new Vue({
-  el:'#app',
+  el: '#app',
   router,
   store,
   render: h => h(App)
 })
-

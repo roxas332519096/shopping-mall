@@ -1,21 +1,8 @@
 <template>
   <div>
     <div class="container with-bottom-nav" style="min-height: 667px;">
+      <swipe :list="banner" v-if="banner"/>
       <div class="content">
-        <div class="js-image-swiper custom-image-swiper custom-image-swiper-single" data-images="1">
-          <div class="swiper-container">
-            <div class="swiper-wrapper">
-              <div class="swp-page">
-                <a class="js-no-follow" href="https://h5.koudaitong.com/v2/index/rukou">
-                  <img
-                    class="goods-main-photo fadeIn"
-                    src="https://img.yzcdn.cn/upload_files/2016/07/29/Fl3T06Mu7TpIhR4L1s2tzm8cZrgt.jpg"
-                  >
-                </a>
-              </div>
-            </div>
-          </div>
-        </div>
         <div class="section-title">优店推荐</div>
         <div class="section-content shops">
           <div class="shop-wrap">
@@ -54,27 +41,30 @@
           </div>
         </div>
         <div class="hot-goods js-waterfull-wrap" data-src>
-          <ul class="js-list js-lazy" data-src>
-            <li>
+          <ul
+            class="js-list js-lazy"
+            data-src
+            v-if="hotList"
+            v-infinite-scroll="loadMore"
+            :infinite-scroll-disabled="loading || noMoreData"
+            infinite-scroll-distance="10"
+          >
+            <li v-for="item in hotList" :key="item.id">
               <div class="goods-item">
-                <a
-                  href="https://h5.youzan.com/v2/showcase/goods?alias=2fwig6rnqfq6m&amp;source=yzapp&amp;f_platform=yzapp"
-                >
+                <a :href="item.id">
                   <div class="thumb img-box">
-                    <img
-                      class="fadeIn"
-                      src="https://img.yzcdn.cn/upload_files/2017/05/06/Fhy3xjNz5XWtcHM0YCZBsUPFpaXL.jpg?imageView2/2/w/320/h/0/q/75/format/jpg"
-                    >
+                    <img class="fadeIn" :src="item.img">
                   </div>
                   <div class="detail">
-                    <div class="title">i-mu/幻响醛击手除甲醛</div>
-                    <div class="price">￥149.00</div>
+                    <div class="title">{{ item.name }}</div>
+                    <div class="price">￥{{ item.price }}</div>
                   </div>
                 </a>
               </div>
             </li>
           </ul>
-          <div class="loading-more">
+
+          <div class="loading-more" v-show="loading">
             <span></span>
           </div>
         </div>
@@ -85,7 +75,47 @@
 </template>
 
 <script>
+import swipe from "../components/swipe.vue";
+
 export default {
-  name: "home"
+  name: "home",
+  components: {
+    swipe
+  },
+  data() {
+    return {
+      banner: [],
+      loading: false,
+      hotList: [],
+      currentPage: 1,
+      noMoreData: false
+    };
+  },
+  methods: {
+    getBanner() {
+      this.$axios.post("/index/banner").then(res => {
+        this.banner = res.data.list;
+      });
+    },
+    loadMore() {
+      if (this.loading === true) return;
+      this.loading = true;
+      this.$axios
+        .post("/index/hotList")
+        .then(res => {
+          this.noMoreData = res.data.list.length < 6 ? true : false;
+          this.hotList = this.hotList.concat(res.data.list);
+          this.currentPage++;
+          this.loading = false;
+        })
+        .catch(() => {
+          this.loading = false;
+        });
+    }
+  },
+  beforeMount() {
+    this.getBanner();
+    this.loadMore();
+  }
 };
 </script>
