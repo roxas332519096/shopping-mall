@@ -1,17 +1,17 @@
 <template>
   <nav class="bottom-nav">
     <ul>
-      <li class="active">
+      <li :class="{active:page === 'home'}">
         <router-link to="/">
           <i class="icon-home"></i>
           <div>有赞</div>
         </router-link>
       </li>
-      <li>
-        <a href>
+      <li :class="{active:page === 'category'}">
+        <router-link to="/category">
           <i class="icon-category"></i>
           <div>分类</div>
-        </a>
+        </router-link>
       </li>
       <li>
         <a href>
@@ -33,7 +33,14 @@
 export default {
   name: "navBar",
   data() {
-    return {};
+    return {
+      page: "home"
+    };
+  },
+  watch: {
+    $route() {
+      this.page = this.$route.name;
+    }
   }
 };
 </script>

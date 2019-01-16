@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="container with-bottom-nav" style="min-height: 667px;">
-      <swipe :list="banner" v-if="banner"/>
+      <swipe :list="banner" v-if="bannerLoaded"/>
       <div class="content">
         <div class="section-title">优店推荐</div>
         <div class="section-content shops">
@@ -85,6 +85,7 @@ export default {
   data() {
     return {
       banner: [],
+      bannerLoaded: false,
       loading: false,
       hotList: [],
       currentPage: 1,
@@ -95,6 +96,7 @@ export default {
     getBanner() {
       this.$axios.post("/index/banner").then(res => {
         this.banner = res.data.list;
+        this.bannerLoaded = true;
       });
     },
     loadMore() {
