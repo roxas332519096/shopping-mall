@@ -47,7 +47,7 @@
             v-if="hotList"
             v-infinite-scroll="loadMore"
             :infinite-scroll-disabled="loading || noMoreData"
-            infinite-scroll-distance="10"
+            infinite-scroll-distance="15"
           >
             <li v-for="item in hotList" :key="item.id">
               <div class="goods-item">
@@ -76,6 +76,8 @@
 
 <script>
 import swipe from "../components/swipe.vue";
+import "../css/index.css";
+import "../css/common.css";
 
 export default {
   name: "home",

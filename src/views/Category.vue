@@ -51,11 +51,12 @@
       </div>
       <div class="class-category">
         <div id="scroll-main-wrap" class="main-content">
+          <loading v-show="loading"/>
           <div
             id="scroll-main-content"
             class="js-main-content inner-content"
             style="height: 943px; transform: translate3d(0px, 0px, 0px);"
-            v-if="page === 0"
+            v-if="page === 0 && !loading"
           >
             <div class="hot-wrap">
               <div class="hot-goods">
@@ -123,7 +124,7 @@
             id="scroll-main-content"
             class="js-main-content inner-content"
             style="height: 534px; transform: translate3d(0px, 0px, 0px);"
-            v-if="page !==0"
+            v-if="page !==0 && !loading"
           >
             <h3 class="category-title">热门品牌</h3>
             <ul class="category-content">
@@ -156,14 +157,18 @@
 
 <script>
 import "../css/category.css";
+import loading from "../components/loading.vue";
 
 export default {
   name: "category",
-  components: {},
+  components: {
+    loading
+  },
   data() {
     return {
       list: [],
       page: 0,
+      loading: false,
       topCategory: [],
       subCategory: []
     };
@@ -175,14 +180,17 @@ export default {
       });
     },
     getContent(index) {
+      this.loading = true;
       this.page = index;
       if (index === 0) {
         this.$axios.post("category/rank").then(res => {
           this.topCategory = res.data.data;
+          this.loading = false;
         });
       } else {
         this.$axios.post("/category/subCategory").then(res => {
           this.subCategory = res.data.data;
+          this.loading = false;
         });
       }
     }
