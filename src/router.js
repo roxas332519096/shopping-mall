@@ -21,5 +21,9 @@ export default new Router({
     path: '/member',
     name: 'member',
     component: () => import('./views/Member')
+  }, {
+    path: '/search/keyword::name&id::id',
+    name: 'search',
+    component: () => import('./views/Search')
   }]
 })
