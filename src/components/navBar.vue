@@ -13,17 +13,17 @@
           <div>分类</div>
         </router-link>
       </li>
-      <li>
-        <a href>
+      <li :class="{active:page === 'cart'}">
+        <router-link to="/cart">
           <i class="icon-cart"></i>
           <div>购物车</div>
-        </a>
+        </router-link>
       </li>
-      <li>
-        <a href>
+      <li :class="{active:page === 'member'}">
+        <router-link to="member">
           <i class="icon-user"></i>
           <div>我</div>
-        </a>
+        </router-link>
       </li>
     </ul>
   </nav>

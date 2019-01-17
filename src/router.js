@@ -13,5 +13,13 @@ export default new Router({
     path: '/category',
     name: 'category',
     component: () => import('./views/Category')
+  }, {
+    path: '/cart',
+    name: 'cart',
+    component: () => import('./views/Cart')
+  }, {
+    path: '/member',
+    name: 'member',
+    component: () => import('./views/Member')
   }]
 })
