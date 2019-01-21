@@ -7,8 +7,6 @@
 
 <script>
 import navBar from "./components/navBar";
-import "./css/index.css";
-import "./css/common.css";
 
 export default {
   name: "App",

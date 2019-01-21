@@ -132,6 +132,7 @@
                 class="category-item js-category-item"
                 v-for="item in subCategory.brandList"
                 :key="item.id"
+                @click="toSearchPage(item.name,item.id)"
               >
                 <img :src="item.image" :alt="item.name" class="category-img">
                 <span class="category-item-name">{{ item.name }}</span>
@@ -143,6 +144,7 @@
                 class="category-item js-category-item"
                 v-for="item in subCategory.subCategoryList"
                 :key="item.id"
+                @click="toSearchPage(item.name,item.id)"
               >
                 <img :src="item.image" :alt="item.name" class="category-img">
                 <span class="category-item-name">{{ item.name }}</span>
@@ -193,6 +195,15 @@ export default {
           this.loading = false;
         });
       }
+    },
+    toSearchPage(name, id) {
+      this.$router.push({
+        name: "search",
+        params: {
+          name,
+          id
+        }
+      });
     }
   },
   beforeMount() {

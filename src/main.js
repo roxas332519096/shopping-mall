@@ -6,6 +6,7 @@ import axios from 'axios'
 import {
   InfiniteScroll
 } from 'mint-ui'
+import VueScrollTo from "vue-scrollto";
 
 //axios
 Vue.config.productionTip = false
@@ -14,6 +15,9 @@ Vue.prototype.$axios = axios;
 
 //mint-ui
 Vue.use(InfiniteScroll);
+
+//scrollTo
+Vue.use(VueScrollTo);
 
 new Vue({
   el: '#app',
