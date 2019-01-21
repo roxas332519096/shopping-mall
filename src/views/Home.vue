@@ -46,7 +46,7 @@
             data-src
             v-if="hotList"
             v-infinite-scroll="loadMore"
-            :infinite-scroll-disabled="loading || noMoreData"
+            :infinite-scroll-disabled="loading && noMoreData"
             infinite-scroll-distance="15"
           >
             <li v-for="item in hotList" :key="item.id">
@@ -63,10 +63,7 @@
               </div>
             </li>
           </ul>
-
-          <div class="loading-more" v-show="loading">
-            <span></span>
-          </div>
+          <loading v-show="loading" />
         </div>
         <div class="js-show-find category-guid" style="display: none;"></div>
       </div>
@@ -78,11 +75,13 @@
 import swipe from "../components/swipe.vue";
 import "../css/index.css";
 import "../css/common.css";
+import loading from "../components/loading"
 
 export default {
   name: "home",
   components: {
-    swipe
+    swipe,
+    loading
   },
   data() {
     return {
@@ -110,9 +109,8 @@ export default {
           this.noMoreData = res.data.list.length < 6 ? true : false;
           this.hotList = this.hotList.concat(res.data.list);
           this.currentPage++;
-          this.loading = false;
         })
-        .catch(() => {
+        .finally(() => {
           this.loading = false;
         });
     }

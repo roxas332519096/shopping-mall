@@ -35,28 +35,30 @@
     <div class="search-content" style="display: none;"></div>
     <div class="content">
       <div class="search-wrap js-waterfull-wrap">
-        <ul class="js-list">
-          <li class="goods-item" v-for="(item,index) in 10" :key="index">
-            <a
-              href="https://h5.youzan.com/v2/showcase/goods?alias=2755moo9i2r1c&amp;source=yzapp&amp;f_platform=yzapp"
-            >
+        <ul
+          class="js-list"
+          v-infinite-scroll="loadMore"
+          :infinite-scroll-disabled="loading"
+          infinite-scroll-distance="100"
+        >
+          <li class="goods-item" v-for="(item,index) in list" :key="index">
+            <a href="#">
               <div class="thumb">
-                <img
-                  src="https://img.yzcdn.cn/upload_files/2017/07/10/FoIdS7VgL1S1ENyDVzfhcLP95p69.jpg?imageView2/2/w/320/h/0/q/75/format/jpg"
-                >
-                <i class="sell-out"></i>
+                <img :src="item.image">
+                <i class="sell-out" v-if="item.isOut"></i>
               </div>
               <div class="detail">
-                <div class="title">简箪黄花梨 当季新鲜水果 现摘现发 无农药化肥 清甜多汁 包邮</div>
+                <div class="title">111</div>
                 <div class="meta relative">
-                  <span class="price">￥58.00</span>
-                  <span class="ship pull-right">包邮</span>
+                  <span class="price">￥{{item.price}}</span>
+                  <span class="ship pull-right" v-if="item.isPostage">包邮</span>
                 </div>
               </div>
             </a>
           </li>
         </ul>
-        <div class="list-finished">已经没有更多了</div>
+        <loading v-show="loading"/>
+        <div class="list-finished" v-if="noMore">已经没有更多了</div>
       </div>
     </div>
     <div
@@ -71,18 +73,40 @@
 
 <script>
 import "../css/search.css";
+import loading from "../components/loading";
 
 export default {
   name: "search",
+  components: {
+    loading
+  },
   data() {
     return {
       keyword: "",
       id: "",
-      isTop: false
+      isTop: false,
+      list: [],
+      loading: false,
+      noMore: false
     };
   },
   methods: {
-    getData(id) {},
+    loadMore() {
+      if (this.loading === true) return;
+      this.loading = true;
+      this.$axios
+        .post(`/search/list`, {
+          keyword: this.keyword,
+          id: this.id
+        })
+        .then(res => {
+          this.noMore = res.data.list.length < 6 ? true : false;
+          this.list = this.list.concat(res.data.list);
+        })
+        .finally(() => {
+          this.loading = false;
+        });
+    },
     goToTop() {},
     Onscroll() {
       this.isTop = window.scrollY > 100 ? true : false;
@@ -93,7 +117,7 @@ export default {
     this.id = this.$route.params.id;
   },
   beforeMount() {
-    this.getData(this.id);
+    this.loadMore();
   },
   mounted() {
     window.addEventListener("scroll", this.Onscroll);
@@ -102,6 +126,9 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.search-wrap{
+  margin-bottom: 40px;
+}
 </style>
 
 
