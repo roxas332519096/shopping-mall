@@ -34,12 +34,12 @@
     </div>
     <div class="search-content" style="display: none;"></div>
     <div class="content">
-      <div class="search-wrap js-waterfull-wrap">
+      <div class="search-wrap">
         <ul
           class="js-list"
           v-infinite-scroll="loadMore"
           :infinite-scroll-disabled="loading"
-          infinite-scroll-distance="100"
+          infinite-scroll-distance="15"
         >
           <li class="goods-item" v-for="(item,index) in list" :key="index">
             <a href="#">
