@@ -332,14 +332,10 @@ img {
 }
 
 .container {
-  overflow-y: hidden;
   position: relative;
   box-sizing: border-box
 }
 
-.content {
-  overflow-y: auto
-}
 
 .content,
 .custom-search {
@@ -1086,10 +1082,6 @@ only screen and (min-device-pixel-ratio:1.5) {
   padding-top: 45px
 }
 
-.search-wrap {
-  padding: 10px 7px;
-  font-size: 0
-}
 
 .search-wrap .goods-item {
   width: 49%;
@@ -1102,15 +1094,8 @@ only screen and (min-device-pixel-ratio:1.5) {
 }
 
 .search-wrap .goods-item .thumb {
-  position: relative;
   margin: 0 0 10px;
   background: #fff
-}
-
-.search-wrap .goods-item .thumb:after {
-  content: " ";
-  display: block;
-  padding-top: 100%
 }
 
 .search-wrap .goods-item .thumb img {
