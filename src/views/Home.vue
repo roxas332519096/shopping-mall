@@ -7,7 +7,7 @@
         <div class="section-content shops">
           <div class="shop-wrap">
             <div class="shop-item">
-              <a href="https://h5.koudaitong.com/v2/showcase/feature?alias=zjtozpgn">
+              <a href="#">
                 <img
                   class="fadeIn"
                   src="https://img.yzcdn.cn/upload_files/2016/09/23/FgQUVNXnvpFKFl1DIN2LXhPA1cxy.png?imageView2/2/w/300/h/0/q/75/format/png"
@@ -15,7 +15,7 @@
               </a>
             </div>
             <div class="shop-item">
-              <a href="https://h5.koudaitong.com/v2/feature/1e22e3vtu">
+              <a href="#">
                 <img
                   class="fadeIn"
                   src="https://img.yzcdn.cn/upload_files/2016/08/03/FqNGnCQS1eq9nIhRg48E_UfFf9K2.png?imageView2/2/w/300/h/0/q/75/format/png"
@@ -23,7 +23,7 @@
               </a>
             </div>
             <div class="shop-item">
-              <a href="https://h5.koudaitong.com/v2/feature/8oups7zk">
+              <a href="#">
                 <img
                   class="fadeIn"
                   src="https://img.yzcdn.cn/upload_files/2016/08/05/Fv5hhMZrtPZQWE7fape0ddEYtSuy.png?imageView2/2/w/300/h/0/q/75/format/png"
@@ -51,7 +51,7 @@
           >
             <li v-for="item in hotList" :key="item.id">
               <div class="goods-item">
-                <a :href="item.id">
+                <router-link :to="{name:'good',params:{id:item.id}}">
                   <div class="thumb img-box">
                     <img class="fadeIn" :src="item.img">
                   </div>
@@ -59,11 +59,11 @@
                     <div class="title">{{ item.name }}</div>
                     <div class="price">￥{{ item.price }}</div>
                   </div>
-                </a>
+                </router-link>
               </div>
             </li>
           </ul>
-          <loading v-show="loading" />
+          <loading v-show="loading"/>
         </div>
         <div class="js-show-find category-guid" style="display: none;"></div>
       </div>
@@ -75,7 +75,7 @@
 import swipe from "../components/swipe.vue";
 import "../css/index.css";
 import "../css/common.css";
-import loading from "../components/loading"
+import loading from "../components/loading";
 
 export default {
   name: "home",

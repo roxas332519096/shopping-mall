@@ -32,7 +32,7 @@ export default new Router({
       component: () => import("./views/Search")
     },
     {
-      path: "/goods/:shopid/:id",
+      path: "/good/:id",
       name: "good",
       component: () => import("./views/Good")
     }

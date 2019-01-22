@@ -38,6 +38,10 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.swiper-container {
+  width: 100%;
+}
+
 .swiper-wrapper {
   img {
     width: 100%;
