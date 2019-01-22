@@ -69,7 +69,7 @@
                 </div>
                 <ul>
                   <li class="goods-item" v-for="item in topCategory.hotGoods" :key="item.id">
-                    <a href="#">
+                    <router-link :to="{name:'good',params:{id:item.id}}">
                       <div class="thumb badge center-img">
                         <img :src="item.image">
                         <span class="num">1</span>
@@ -82,7 +82,7 @@
                           <span>{{ item.recommend }}</span>
                         </div>
                       </div>
-                    </a>
+                    </router-link>
                   </li>
                 </ul>
               </div>

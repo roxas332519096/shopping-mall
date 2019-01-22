@@ -42,7 +42,7 @@
           infinite-scroll-distance="15"
         >
           <li class="goods-item" v-for="(item,index) in list" :key="index">
-            <a href="#">
+            <router-link :to="{name:'good',params:{id:item.id}}">
               <div class="thumb">
                 <img :src="item.image">
                 <i class="sell-out" v-if="item.isOut"></i>
@@ -54,7 +54,7 @@
                   <span class="ship pull-right" v-if="item.isPostage">包邮</span>
                 </div>
               </div>
-            </a>
+            </router-link>
           </li>
         </ul>
         <loading v-show="loading"/>

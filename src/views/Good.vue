@@ -36,7 +36,7 @@
                 </dl>
               </div>
             </div>
-            <div class="sku-detail adv-opts">
+            <div class="sku-detail adv-opts" @click="sku(0)">
               <div class="sku-detail-inner adv-opts-inner">
                 <dl class="sku-group select-sku js-select-sku">
                   <dt>
@@ -126,9 +126,9 @@
               <div class="stick-bottom-btns">
                 <!-- 尚未开售 -->
                 <div class="btn-cart">
-                  <a href="#" class="js-add-cart">加入购物车</a>
+                  <a href="#" class="js-add-cart" @click="sku(1)">加入购物车</a>
                 </div>
-                <div class="btn-buy">
+                <div class="btn-buy" @click="sku(2)">
                   <a href="javascript:;" class="js-buy-it">立即购买</a>
                 </div>
               </div>
@@ -142,7 +142,7 @@
             <a class="js-show-more-btn icon show-more-btn hide"></a>
           </div>
             </div>-->
-            <div id="right-icon" class="js-right-icon">
+            <div id="right-icon" class="js-right-icon" v-show="carShow">
               <div class="js-right-icon-container right-icon-container clearfix">
                 <a id="global-cart" href="#" class="icon new s0" style>
                   <p class="icon-img"></p>
@@ -298,104 +298,106 @@
       </div>
       <div
         id="yFzBKP9GDL"
-        style="height: 100%; position: fixed; top: 0px; left: 0px; right: 0px; background-color: rgba(0, 0, 0, 0.7); z-index: 1000; transition: none 0.2s ease; opacity: 1; display: none;"
+        v-show="skuShow"
+        style="height: 100%; position: fixed; top: 0px; left: 0px; right: 0px; background-color: rgba(0, 0, 0, 0.7); z-index: 1000; transition: none 0.2s ease; opacity: 1;"
       ></div>
-      <div
-        id="QfEqtDbeK9"
-        class="sku-layout sku-box-shadow popup"
-        style="overflow: hidden; position: absolute; z-index: 1000; background: white; bottom: 0px; left: 0px; right: 0px; visibility: visible; transform: translate3d(0px, 0px, 0px); transition: all 300ms ease; opacity: 1; display: none;"
-      >
-        <div class="sku-layout-title name-card sku-name-card">
-          <div class="thumb">
-            <img
-              class="js-goods-thumb goods-thumb"
-              src="https://img.yzcdn.cn/upload_files/2017/07/12/FkSvYz8FLLD9-t0smXO43hF6ov7S.jpg?imageView2/2/w/100/h/100/q/75/format/webp?imageView2/2/w/100/h/100/q/75/format/webp"
-              alt
-            >
-          </div>
-          <div class="detail goods-base-info clearfix">
-            <p class="title c-black ellipsis">寻找田野|最正宗的上海南汇8424得奖最多奥运会指定西瓜1只/箱9-11斤</p>
-            <div class="goods-price clearfix">
-              <div class="current-price pull-left c-black">
-                <span class="price-name pull-left font-size-14 c-orange">¥</span>
-                <i class="js-goods-price price font-size-16 vertical-middle c-orange">98.00</i>
-              </div>
-              <div class="original-price vertical-middle font-size-14 line-through">108</div>
-            </div>
-          </div>
-          <div class="js-cancel sku-cancel">
-            <div class="cancel-img"></div>
-          </div>
-        </div>
+      <transition name="sku">
         <div
-          class="sku-detail adv-opts hotel-checkin-select"
-          style="border: none; margin: 0; display: none;"
+          id="QfEqtDbeK9"
+          class="sku-layout sku-box-shadow popup"
+          v-show="skuShow"
+          style="overflow: hidden; position: fixed; z-index: 1000; background: white; bottom: 0px; left: 0px; right: 0px; visibility: visible;"
         >
-          <div class="sku-detail-inner adv-opts-inner-addons">
-            <dl class="sku-group select-sku js-select-checkin-date">
-              <dt>时间：</dt>
-              <dd class="js-checkin-date-value">选择入住时间</dd>
-            </dl>
+          <div class="sku-layout-title name-card sku-name-card">
+            <div class="thumb">
+              <img class="js-goods-thumb goods-thumb" :src="detail.imgs[0]" v-if="detail.imgs[0]">
+            </div>
+            <div class="detail goods-base-info clearfix">
+              <p class="title c-black ellipsis">{{ detail.title }}</p>
+              <div class="goods-price clearfix">
+                <div class="current-price pull-left c-black">
+                  <span class="price-name pull-left font-size-14 c-orange">¥</span>
+                  <i
+                    class="js-goods-price price font-size-16 vertical-middle c-orange"
+                  >{{ detail.price }}</i>
+                </div>
+                <div
+                  class="original-price vertical-middle font-size-14 line-through"
+                >{{ detail.originalPrice }}</div>
+              </div>
+            </div>
+            <div class="js-cancel sku-cancel" @click="skuShow = false">
+              <div class="cancel-img"></div>
+            </div>
+          </div>
+          <div
+            class="sku-detail adv-opts hotel-checkin-select"
+            style="border: block; margin: 0; display: block;"
+          ></div>
+          <div class="adv-opts layout-content" style="max-height: 554px;">
+            <div class="goods-models js-sku-views block block-list border-top-0">
+              <dl class="clearfix block-item sku-list-container">
+                <dt class="model-title sku-sel-title">
+                  <label>净含量：</label>
+                </dt>
+                <dd>
+                  <ul class="model-list sku-sel-list">
+                    <li class="tag sku-tag pull-left ellipsis active">4500g-5000g</li>
+                  </ul>
+                </dd>
+              </dl>
+              <dl class="clearfix block-item">
+                <dt class="sku-num pull-left">
+                  <label>购买数量：</label>
+                </dt>
+                <dd class="sku-quantity-contaienr">
+                  <dl class="clearfix">
+                    <div class="quantity">
+                      <button class="minus" :class="{disabled:skuBuy <= 1}" type="button"></button>
+                      <input type="text" class="txt" pattern="[0-9]*" :value="skuBuy">
+                      <button class="plus" type="button"></button>
+                      <div class="response-area response-area-minus" @click="count(-1)"></div>
+                      <div class="response-area response-area-plus" @click="count(1)"></div>
+                    </div>
+                  </dl>
+                </dd>
+                <dt class="other-info">
+                  <div class="stock">剩余{{ detail.remain }}件</div>
+                </dt>
+              </dl>
+              <div class="block-item block-item-messages" style="display: block;"></div>
+            </div>
+            <!-- <div class="bottom-padding"></div> -->
+            <div class="confirm-action content-foot clearfix">
+              <!-- 加入购物车 -->
+              <div class="big-btn-1-1" v-show="skuType === 1">
+                <a
+                  href="javascript:;"
+                  class="js-confirm-it big-btn red-btn main-btn"
+                  @click="addCar()"
+                >加入购物车</a>
+              </div>
+              <!-- 立即购买 -->
+              <div class="big-btn-1-1" v-show="skuType === 2">
+                <a href="javascript:;" class="js-confirm-it big-btn red-btn main-btn">下一步</a>
+              </div>
+              <!-- 选择规格 -->
+              <div class="big-btn-2-1" v-show="skuType === 0">
+                <a
+                  href="javascript:;"
+                  class="js-mutiBtn-confirm cart big-btn orange-btn vice-btn"
+                  @click="addCar()"
+                >加入购物车</a>
+                <a
+                  href="javascript:;"
+                  class="js-mutiBtn-confirm confirm big-btn red-btn main-btn"
+                >立即购买</a>
+              </div>
+            </div>
           </div>
         </div>
-        <div class="adv-opts layout-content" style="max-height: 554px;">
-          <div class="goods-models js-sku-views block block-list border-top-0">
-            <dl class="clearfix block-item sku-list-container">
-              <dt class="model-title sku-sel-title">
-                <label>净含量：</label>
-              </dt>
-              <dd>
-                <ul class="model-list sku-sel-list">
-                  <li class="tag sku-tag pull-left ellipsis active">4500g-5000g</li>
-                </ul>
-              </dd>
-            </dl>
-            <dl class="clearfix block-item">
-              <dt class="sku-num pull-left">
-                <label>购买数量：</label>
-              </dt>
-              <dd class="sku-quantity-contaienr">
-                <dl class="clearfix">
-                  <div class="quantity">
-                    <button class="minus disabled" type="button" disabled="true"></button>
-                    <input type="text" class="txt" pattern="[0-9]*" value="1">
-                    <button class="plus" type="button"></button>
-                    <div class="response-area response-area-minus"></div>
-                    <div class="response-area response-area-plus"></div>
-                  </div>
-                </dl>
-              </dd>
-              <dt class="other-info">
-                <div class="stock">剩余450件</div>
-              </dt>
-            </dl>
-            <div class="block-item block-item-messages" style="display: none;"></div>
-          </div>
-          <!-- <div class="bottom-padding"></div> -->
-          <div class="confirm-action content-foot clearfix">
-            <!-- 加入购物车 -->
-            <div class="big-btn-1-1" style="display: none;">
-              <a href="javascript:;" class="js-confirm-it big-btn red-btn main-btn">加入购物车</a>
-            </div>
-            <!-- 立即购买 -->
-            <div class="big-btn-1-1">
-              <a href="javascript:;" class="js-confirm-it big-btn red-btn main-btn">下一步</a>
-            </div>
-            <!-- 选择规格 -->
-            <div class="big-btn-2-1" style="display: none;">
-              <a
-                href="javascript:;"
-                class="js-mutiBtn-confirm cart big-btn orange-btn vice-btn"
-              >加入购物车</a>
-              <a
-                href="javascript:;"
-                class="js-mutiBtn-confirm confirm big-btn red-btn main-btn"
-              >立即购买</a>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="motify" style="display: none;">
+      </transition>
+      <div class="motify" v-show="addCarSucess">
         <div class="motify-inner">已成功添加到购物车</div>
       </div>
     </div>
@@ -428,7 +430,12 @@ export default {
       type: ["商品详情", "本店成交"],
       currentIndex: 0,
       sales: [],
-      loading: false
+      loading: false,
+      skuBuy: 1,
+      skuShow: false,
+      carShow: false,
+      addCarSucess: false,
+      skuType: null
     };
   },
   methods: {
@@ -462,6 +469,22 @@ export default {
     },
     changeType(index) {
       this.currentIndex = index;
+    },
+    sku(type) {
+      this.skuType = type;
+      this.skuShow = true;
+    },
+    count(num) {
+      if (num === -1 && this.skuBuy === 1) return;
+      this.skuBuy = this.skuBuy + num;
+    },
+    addCar() {
+      this.carShow = true;
+      this.addCarSucess = true;
+      this.skuShow = false;
+      setTimeout(() => {
+        this.addCarSucess = false;
+      }, 1500);
     }
   },
   created() {
@@ -475,6 +498,15 @@ export default {
 <style lang="scss" scoped>
 .custom-image-swiper .swiper-slide a {
   width: 100% !important;
+}
+
+.sku-enter-active,
+.sku-leave-active {
+  transition: all 0.3s ease;
+  transform: translateY(0);
+}
+.sku-enter, .sku-leave-to /* .fade-leave-active below version 2.1.8 */ {
+  transform: translateY(100%);
 }
 </style>
 
