@@ -28,9 +28,11 @@
                   href="javascript:;"
                   data-type="cart"
                   class="j-edit-list pull-right c-blue font-size-12 edit-list"
+                  @click="edit(shopIndex)"
+                  v-show="shop.canEdit"
                 >
                   <!---->
-                  编辑
+                  {{ shop.status }}
                 </a>
               </div>
               <!---->
@@ -54,10 +56,7 @@
                           <img class="js-lazy" :src="good.thumbnail">
                         </a>
                         <div class="detail">
-                          <a
-                            href="https://h5.youzan.com/v2/showcase/goods?alias=2oivacpjh2ex0"
-                            class="js-goods-link"
-                          >
+                          <a href="#" class="js-goods-link">
                             <h3 class="title js-ellipsis">
                               <i>{{ good.title }}</i>
                             </h3>
@@ -72,7 +71,7 @@
                           <!-- 编辑状态 -->
                           <div class="num">
                             <!---->
-                            <div class="quantity" v-show="false">
+                            <div class="quantity" v-show="shop.editing">
                               <button type="button" class="minus disabled"></button>
                               <input
                                 type="text"
@@ -92,7 +91,7 @@
                         </div>
                         <div class="error-box"></div>
                       </div>
-                      <div class="delete-btn" v-show="false">
+                      <div class="delete-btn">
                         <span>删除</span>
                       </div>
                     </div>
@@ -126,7 +125,6 @@
                 href="javascript:;"
                 disabled="disabled"
                 class="j-delete-goods btn font-size-14 btn-red"
-                v-show="false"
               >删除</button>
             </div>
           </div>
@@ -153,6 +151,9 @@ export default {
       this.$axios.post("/cart/list").then(res => {
         res.data.cartList.forEach(shop => {
           shop.selected = true;
+          shop.editing = false;
+          shop.status = "编辑";
+          shop.canEdit = true;
           shop.goodList.forEach(good => {
             good.selected = true;
           });
@@ -173,6 +174,23 @@ export default {
       shop.selected = shop.goodList.every(item => {
         return item.selected === true;
       });
+    },
+    edit(index) {
+      this.shopList[index].editing = !this.shopList[index].editing;
+      this.shopList[index].status = this.shopList[index].editing
+        ? "完成"
+        : "编辑";
+      if (this.shopList[index].editing) {
+        this.shopList.forEach((item, index2) => {
+          if (index2 !== index) {
+            item.canEdit = false;
+          }
+        });
+      } else {
+        this.shopList.forEach(item => {
+          item.canEdit = true;
+        });
+      }
     }
   },
   computed: {
@@ -212,6 +230,17 @@ export default {
         });
       });
       return count;
+    },
+    goods() {
+      let goods = [];
+      this.shopList.forEach(shop => {
+        shop.goodList.forEach(good => {
+          if (good.selected === true) {
+            goods.push(good);
+          }
+        });
+      });
+      return goods;
     }
   },
   created() {
