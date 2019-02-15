@@ -309,8 +309,8 @@
           style="overflow: hidden; position: fixed; z-index: 1000; background: white; bottom: 0px; left: 0px; right: 0px; visibility: visible;"
         >
           <div class="sku-layout-title name-card sku-name-card">
-            <div class="thumb">
-              <img class="js-goods-thumb goods-thumb" :src="banner[0].image">
+            <div class="thumb" v-if="banner.length === 3">
+              <img class="js-goods-thumb goods-thumb" :src="banner[0].image" >
             </div>
             <div class="detail goods-base-info clearfix">
               <p class="title c-black ellipsis">{{ detail.title }}</p>
