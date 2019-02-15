@@ -3,9 +3,6 @@
     <div class="content clearfix js-page-content">
       <div id="cart-container">
         <div>
-          <!---->
-          <!---->
-          <!---->
           <div class="js-shop-list shop-list">
             <div
               class="block block-order block-cart"
@@ -18,6 +15,7 @@
                     class="check"
                     :class="{checked:shop.selected}"
                     @click="selectShop(shopIndex)"
+                    v-show="!editing"
                   ></span>
                 </div>
                 <a class="shop-title">
@@ -49,6 +47,13 @@
                           class="check"
                           :class="{checked:good.selected}"
                           @click="selectGood(goodIndex,shopIndex)"
+                          v-show="!editing"
+                        ></span>
+                        <span
+                          class="check"
+                          :class="{checked:good.deletedSelected}"
+                          @click="good.deletedSelected = !good.deletedSelected"
+                          v-show="shop.canEdit&&editing"
                         ></span>
                       </div>
                       <div class="name-card clearfix">
@@ -72,7 +77,7 @@
                           <div class="num">
                             <!---->
                             <div class="quantity" v-show="shop.editing">
-                              <button type="button" class="minus disabled"></button>
+                              <button type="button" class="minus " :class="{'disabled':good.quantity <=1}"></button>
                               <input
                                 type="text"
                                 pattern="[0-9]*"
@@ -80,8 +85,8 @@
                                 :value="good.quantity"
                               >
                               <button type="button" class="plus"></button>
-                              <div class="response-area response-area-minus"></div>
-                              <div class="response-area response-area-plus"></div>
+                              <div class="response-area response-area-minus" @click="countQuantity(shopIndex,goodIndex,-1)"></div>
+                              <div class="response-area response-area-plus" @click="countQuantity(shopIndex,goodIndex,1)"></div>
                             </div>
                           </div>
                           <div class="price c-orange">
@@ -107,10 +112,13 @@
                   class="check"
                   :class="{ checked:allSelected }"
                   @click="allSelected = !allSelected"
-                ></span> 全选
+                  v-show="!editing"
+                ></span>
+                <span class="check" v-if="editing&&editIndex!==-1" :class="{checked:allDeletedSelected }" @click="allDeletedSelected = !allDeletedSelected"></span>
+                全选
               </div>
               <!-- 显示状态 -->
-              <div class="total-price">
+              <div class="total-price" v-show="!editing">
                 合计：¥
                 <span class="js-total-price" style="color: rgb(255, 102, 0);">{{ total }}</span>
                 <p class="c-gray-dark">不含运费</p>
@@ -122,8 +130,10 @@
               >结算 ({{ count }})</button>
               <!-- 编辑状态 -->
               <button
+                v-show="editing"
                 href="javascript:;"
-                disabled="disabled"
+                v-if="editing"
+                :disabled="!allDeletedSelected"
                 class="j-delete-goods btn font-size-14 btn-red"
               >删除</button>
             </div>
@@ -143,7 +153,9 @@ export default {
   name: "cart",
   data() {
     return {
-      shopList: []
+      shopList: [],
+      editing: false,
+      editIndex : -1,
     };
   },
   methods: {
@@ -156,6 +168,7 @@ export default {
           shop.canEdit = true;
           shop.goodList.forEach(good => {
             good.selected = true;
+            good.deletedSelected = false;
           });
         });
         this.shopList = res.data.cartList;
@@ -176,6 +189,12 @@ export default {
       });
     },
     edit(index) {
+      this.editing = !this.editing;
+      if(this.editing){
+        this.editIndex = index;
+      }else{
+        this.editIndex = -1;
+      }
       this.shopList[index].editing = !this.shopList[index].editing;
       this.shopList[index].status = this.shopList[index].editing
         ? "完成"
@@ -191,6 +210,11 @@ export default {
           item.canEdit = true;
         });
       }
+    },
+    countQuantity(shopIndex,goodIndex,val){
+      let good = this.shopList[shopIndex].goodList[goodIndex]
+      if(val ===-1 && good.quantity <=1) return
+      good.quantity += val
     }
   },
   computed: {
@@ -207,6 +231,18 @@ export default {
             good.selected = val;
           });
         });
+      }
+    },
+    allDeletedSelected:{
+      get(){
+       return this.shopList[this.editIndex].goodList.every(item=>{
+          return item.deletedSelected === true;
+        })
+      },
+      set(val){
+        this.shopList[this.editIndex].goodList.forEach(item=>{
+          item.deletedSelected = val;
+        })
       }
     },
     total() {
@@ -241,7 +277,7 @@ export default {
         });
       });
       return goods;
-    }
+    },
   },
   created() {
     this.getList();

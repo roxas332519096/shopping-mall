@@ -5,7 +5,7 @@
         <div class="content no-sidebar">
           <div class="content-body">
             <div class="custom-image-swiper custom-goods-swiper js-swp swp">
-              <swipe :list="banner" v-if="banner.length"/>
+              <swipe :list="banner" v-if="banner.length === 3"/>
             </div>
             <div class="goods-header">
               <h2 class="title">{{ detail.title }}</h2>
@@ -144,10 +144,10 @@
             </div>-->
             <div id="right-icon" class="js-right-icon" v-show="carShow">
               <div class="js-right-icon-container right-icon-container clearfix">
-                <a id="global-cart" href="#" class="icon new s0" style>
+                <router-link :to="{name:'cart'}" id="global-cart" href="#" class="icon new s0" style>
                   <p class="icon-img"></p>
                   <p class="icon-txt">购物车</p>
-                </a>
+                </router-link>
                 <a class="js-show-more-btn icon show-more-btn"></a>
               </div>
             </div>
@@ -217,15 +217,15 @@
             <div class="copyright">
               <div class="ft-links">
                 <a
-                  href="https://h5.youzan.com/v2/showcase/homepage?kdt_id=16546132"
+                  href="#"
                   target="_blank"
                 >店铺主页</a>
                 <a
-                  href="https://h5.youzan.com/v2/showcase/usercenter?kdt_id=16546132"
+                  href="#"
                   target="_blank"
                 >会员中心</a>
                 <a href="javascript:;" class="js-open-follow">关注我们</a>
-                <a href="https://h5.youzan.com/v2/showcase/cert" target="_blank">店铺信息</a>
+                <a href="#" target="_blank">店铺信息</a>
                 <!-- 第三方app隐藏topbar时，需要在底部显示购物记录入口 -->
               </div>
               <div
@@ -310,7 +310,7 @@
         >
           <div class="sku-layout-title name-card sku-name-card">
             <div class="thumb">
-              <img class="js-goods-thumb goods-thumb" :src="detail.imgs[0]" v-if="detail.imgs[0]">
+              <img class="js-goods-thumb goods-thumb" :src="banner[0].image">
             </div>
             <div class="detail goods-base-info clearfix">
               <p class="title c-black ellipsis">{{ detail.title }}</p>
