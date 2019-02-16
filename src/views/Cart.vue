@@ -40,6 +40,9 @@
                     class="block-item block-item-cart"
                     v-for="(good,goodIndex) in shop.goodList"
                     :key="good.id"
+                    :ref="`list-${shopIndex}-${goodIndex}`"
+                    @touchstart="start($event,good)"
+                    @touchend="end($event,good,shopIndex,goodIndex)"
                   >
                     <div>
                       <div class="check-container">
@@ -77,7 +80,11 @@
                           <div class="num">
                             <!---->
                             <div class="quantity" v-show="shop.editing">
-                              <button type="button" class="minus " :class="{'disabled':good.quantity <=1}"></button>
+                              <button
+                                type="button"
+                                class="minus"
+                                :class="{'disabled':good.quantity <=1}"
+                              ></button>
                               <input
                                 type="text"
                                 pattern="[0-9]*"
@@ -85,8 +92,14 @@
                                 :value="good.quantity"
                               >
                               <button type="button" class="plus"></button>
-                              <div class="response-area response-area-minus" @click="countQuantity(shopIndex,goodIndex,-1)"></div>
-                              <div class="response-area response-area-plus" @click="countQuantity(shopIndex,goodIndex,1)"></div>
+                              <div
+                                class="response-area response-area-minus"
+                                @click="countQuantity(shopIndex,goodIndex,-1)"
+                              ></div>
+                              <div
+                                class="response-area response-area-plus"
+                                @click="countQuantity(shopIndex,goodIndex,1)"
+                              ></div>
                             </div>
                           </div>
                           <div class="price c-orange">
@@ -96,7 +109,7 @@
                         </div>
                         <div class="error-box"></div>
                       </div>
-                      <div class="delete-btn">
+                      <div class="delete-btn" @click="deleteGood(shopIndex,goodIndex)">
                         <span>删除</span>
                       </div>
                     </div>
@@ -114,7 +127,12 @@
                   @click="allSelected = !allSelected"
                   v-show="!editing"
                 ></span>
-                <span class="check" v-if="editing&&editIndex!==-1" :class="{checked:allDeletedSelected }" @click="allDeletedSelected = !allDeletedSelected"></span>
+                <span
+                  class="check"
+                  v-if="editing&&editIndex!==-1"
+                  :class="{checked:allDeletedSelected }"
+                  @click="allDeletedSelected = !allDeletedSelected"
+                ></span>
                 全选
               </div>
               <!-- 显示状态 -->
@@ -134,6 +152,7 @@
                 href="javascript:;"
                 v-if="editing"
                 :disabled="!allDeletedSelected"
+                @click="deleteAllGoods(shopIndex)"
                 class="j-delete-goods btn font-size-14 btn-red"
               >删除</button>
             </div>
@@ -215,6 +234,38 @@ export default {
       let good = this.shopList[shopIndex].goodList[goodIndex]
       if(val ===-1 && good.quantity <=1) return
       good.quantity += val
+    },
+    start(e,good){
+      good.startX = e.changedTouches[0].clientX
+    },
+    end(e,good,shopIndex,goodIndex){
+      good.endX = e.changedTouches[0].clientX
+      if (!this.editing && this.editIndex !== shopIndex) return
+      let node = this.$refs[`list-${shopIndex}-${goodIndex}`][0]
+      node.style.transition = '0.1s'
+      if(good.startX - good.endX > 50){
+        node.style.transform = 'translateX(-65px)'
+      }else if(good.startX - good.endX < -50){
+        node.style.transform = 'translateX(0px)'
+      }
+    },
+    deleteGood(shopIndex,goodIndex){
+      this.shopList[shopIndex].goodList.splice(goodIndex,1)
+      if(this.shopList[shopIndex].goodList.length ===0 ){
+        this.shopList.splice(shopIndex,1)
+        this.changeCanEdit()
+      }
+    },
+    deleteAllGoods(shopIndex){
+      this.shopList.splice(shopIndex,1)
+      this.changeCanEdit()
+    },
+    changeCanEdit(){
+      this.editing = false;
+      this.editIndex = -1;
+      this.shopList.forEach((item)=>{
+        item.canEdit = true
+      })
     }
   },
   computed: {

@@ -7,6 +7,7 @@ import {
   InfiniteScroll
 } from 'mint-ui'
 import VueScrollTo from "vue-scrollto";
+import Velocity from 'velocity-animate';
 
 //axios
 Vue.config.productionTip = false
@@ -18,6 +19,9 @@ Vue.use(InfiniteScroll);
 
 //scrollTo
 Vue.use(VueScrollTo);
+
+//Velocity
+Vue.prototype.Velocity = Velocity
 
 new Vue({
   el: '#app',

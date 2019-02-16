@@ -14,7 +14,6 @@
     "babel-loader": "^8.0.5",
     "mint-ui": "^2.2.13",
     "swiper": "^4.4.6",
-    "velocity-animate": "^2.0.5",
     "vue": "^2.5.21",
     "vue-router": "^3.0.1",
     "vue-scrollto": "^2.13.0",
@@ -31,6 +30,7 @@
     "eslint-plugin-vue": "^5.0.0",
     "node-sass": "^4.9.0",
     "sass-loader": "^7.0.1",
+    "velocity-animate": "^2.0.5",
     "vue-template-compiler": "^2.5.21"
   },
   "description": "```\r npm install\r ```",

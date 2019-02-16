@@ -692,10 +692,10 @@ only screen and (min-device-pixel-ratio: 1.5) {
 }
 
 .block-list-cart .block-item-cart .delete-btn {
-  width: 640px;
+  width:60px;
   height: 100%;
   position: absolute;
-  right: -640px;
+  right: -65px;
   top: -1px;
   background-color: #ff4343;
   color: #fff;
