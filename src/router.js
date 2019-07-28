@@ -24,7 +24,12 @@ export default new Router({
     {
       path: "/member",
       name: "member",
-      component: () => import("./views/Member")
+      component: () => import("./views/Member"),
+    },
+    {
+      name:'adress',
+      path:'/member/adress',
+      component : ()=> import("./views/Adress")
     },
     {
       path: "/search/keyword::name&id::id",

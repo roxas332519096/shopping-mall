@@ -161,7 +161,10 @@ body.body-fixed-bottom {
 }
 
 .container {
-  background-color: #f8f8f8
+  background-color: #f8f8f8;
+  overflow: auto;
+  margin-bottom: 100px;
+  
 }
 
 strong {
